@@ -18,7 +18,7 @@ class Agregate extends Component {
 class Filter extends Component {
   render() {
     return (
-      <div style={defaultStyle}>
+      <div style={{...defaultStyle, width: '25%'}} >
         <img alt="icon" />
         <input type="text" />
       </div>
@@ -49,17 +49,19 @@ class App extends Component {
       <div className="App">
         <header>
           <h1 style={headerStyle} >Title</h1>
+        </header>
+        <section>
           <Agregate />
           <Agregate />
           <Filter />
-
-          <br/><br/><br/>
-
+        </section>
+        <div style={{height: "60px"}} ></div>
+        <section>
           <Playlist />
           <Playlist />
           <Playlist />
           <Playlist />
-        </header>
+        </section>
       </div>
     );
   }
