@@ -123,14 +123,17 @@ class Filter extends Component {
 
 class Playlist extends Component {
   render() {
+    let playlist = this.props.playlist
     return (
       <div style={{...defaultStyle, width: '25%'}} >
         <img alt="image" src={image.md} />
-        <h3>Playlist Name</h3>
+        <h3>{playlist.name}</h3>
         <ul>
-          <li>Song 1</li>
-          <li>Song 2</li>
-          <li>Song 3</li>
+          {
+            playlist.songs.map(song =>
+              <li>{song.name}</li>
+            )
+          }
         </ul>
       </div>
     );
@@ -139,7 +142,7 @@ class Playlist extends Component {
 
 class App extends Component {
   constructor() {
-    super();
+    super()
     this.state = {serverData: {}}
   }
   componentDidMount() {
@@ -165,10 +168,12 @@ class App extends Component {
             </header>
             <div style={{height: "60px"}} ></div>
             <section>
-              <Playlist />
-              <Playlist />
-              <Playlist />
-              <Playlist />
+              {
+                this.state.serverData.user.playlists.map(playlist =>
+                  <Playlist playlist={playlist}  />
+                )
+              }
+              
             </section>
           </div> : <h1>Loading ...</h1>
 
