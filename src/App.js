@@ -4,9 +4,12 @@ import './App.css';
 let defaultStyle = {
   display: "inline-block"
 }
-let image = {
-  sm: "http://via.placeholder.com/20x20",
-  md: "http://via.placeholder.com/120x120"
+let filterStyles = {
+  margin: "20px 0",
+  padding: "5px"
+}
+let AppStyles = {
+  "font-family": "'Segoe UI', 'helvetica neue', helvetica, sans-serif"
 }
 let fakeServerData = {
   user: {
@@ -104,7 +107,7 @@ class HoursCounter extends Component {
     }, 0)
     return (
       <div style={ {width: '40%', display: "inline-block" } }>
-        <h2>{Math.round(totalDuration/60/60)} hours</h2>
+        <h2>{Math.round(totalDuration/60)} Hours</h2>
       </div>
     );
   }
@@ -113,9 +116,9 @@ class HoursCounter extends Component {
 class Filter extends Component {
   render() {
     return (
-      <div style={{...defaultStyle, width: '40%'}} >
-        <img alt="icon" src={image.sm} style={{...defaultStyle, margin: "0 10px -6px"}} />
-        <input type="text" />
+      <div style={{...defaultStyle, width: '50%'}} >
+        <label style={filterStyles} htmlFor="filter">Filter by name: </label>
+        <input style={filterStyles} type="text" id="filter" onChange={e => this.props.onTextChange(e.target.value)} />
       </div>
     );
   }
@@ -126,7 +129,7 @@ class Playlist extends Component {
     let playlist = this.props.playlist
     return (
       <div style={{...defaultStyle, width: '25%'}} >
-        <img alt="image" src={image.md} />
+        <img alt="image" src={"http://via.placeholder.com/120x120"} />
         <h3>{playlist.name}</h3>
         <ul>
           {
@@ -143,40 +146,44 @@ class Playlist extends Component {
 class App extends Component {
   constructor() {
     super()
-    this.state = {serverData: {}}
+    this.state = {
+      serverData: {},
+      filterString: ''
+    }
   }
   componentDidMount() {
     setTimeout(() => {
       this.setState({serverData: fakeServerData})
-    }, 200);
+    }, 50);
   }
   render() {
     let headerStyle = {fontSize: "50px"}
+    let playlistsToRender = this.state.serverData.user ? 
+      this.state.serverData.user.playlists
+        .filter( playlist =>
+          playlist.name.toLocaleLowerCase().includes(
+            this.state.filterString.toLocaleLowerCase()
+        )
+      ) : []
     return (
-      <div className="App">
+      <div className="App" style={AppStyles} >
         { this.state.serverData.user ?
-
           <div className="appContent">
             <header>
               <h1 style={headerStyle} >
                 { this.state.serverData.user.name }'s Playlists
               </h1>
-              
-              <PlaylistCounter playlists={ this.state.serverData.user.playlists } />
-              <HoursCounter playlists={ this.state.serverData.user.playlists } />
-              <Filter />
+              <PlaylistCounter playlists={playlistsToRender} />
+              <HoursCounter playlists={playlistsToRender} />
+              <Filter onTextChange={text => this.setState({filterString: text})} />
             </header>
-            <div style={{height: "60px"}} ></div>
+            <div style={{height: "30px"}} ></div>
             <section>
-              {
-                this.state.serverData.user.playlists.map(playlist =>
-                  <Playlist playlist={playlist}  />
-                )
+              {playlistsToRender.map(playlist =>
+                  <Playlist playlist={playlist} />)
               }
-              
             </section>
           </div> : <h1>Loading ...</h1>
-
         }
       </div>
     );
