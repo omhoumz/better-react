@@ -129,7 +129,7 @@ class Playlist extends Component {
     let playlist = this.props.playlist
     return (
       <div style={{...defaultStyle, width: '25%'}} >
-        <img alt="image" src={"http://via.placeholder.com/120x120"} />
+        <img alt="Playlist cover placeholder" src={"http://via.placeholder.com/120x120"} />
         <h3>{playlist.name}</h3>
         <ul>
           {
