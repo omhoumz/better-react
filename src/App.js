@@ -117,7 +117,7 @@ class Filter extends Component {
   render() {
     return (
       <div style={{...defaultStyle, width: '50%'}} >
-        <label style={filterStyles} htmlFor="filter">Filter by name: </label>
+        <label style={filterStyles} htmlFor="filter">Filter by playlist name: </label>
         <input style={filterStyles} type="text" id="filter" onChange={e => this.props.onTextChange(e.target.value)} />
       </div>
     );
@@ -129,7 +129,7 @@ class Playlist extends Component {
     let playlist = this.props.playlist
     return (
       <div style={{...defaultStyle, width: '25%'}} >
-        <img alt="Playlist cover placeholder" src={"http://via.placeholder.com/120x120"} />
+        <img alt="Playlist Cover" src={"http://via.placeholder.com/120x120"} />
         <h3>{playlist.name}</h3>
         <ul>
           {
